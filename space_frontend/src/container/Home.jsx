@@ -1,10 +1,9 @@
-import React from "react";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
+import SideBar from "../components/SideBar";
 import UserProfile from "../components/UserProfile";
 import { client } from "../client";
 import logo from "../assets/logo.png";
@@ -22,7 +21,8 @@ const Home = () => {
       : localStorage.clear();
 
   useEffect(() => {
-    const query = userQuery(userInfo?.googleId);
+  const query = userQuery(userInfo?.sub);
+
     client.fetch(query).then((data) => {
       setUser(data[0]);
     });
@@ -34,7 +34,7 @@ const Home = () => {
   return (
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">
       <div className="hidden md:flex h-screen flex-initial">
-        <Sidebar user={user && user} />
+        <SideBar user={user && user} />
       </div>
       <div className="flex md:hidden flex-row">
         <div className="p-2 w-full flex flex-row justify-between items-center shadow-md">
@@ -49,7 +49,7 @@ const Home = () => {
           <Link to={`user-profile/${user?._id}`}>
             <img
               src={user?.image}
-              alt="logo"
+              alt="user-pic"
               className="w-9 h-9 rounded-full "
             />
           </Link>
@@ -63,7 +63,7 @@ const Home = () => {
                 onClick={() => setToggleSidebar(false)}
               />
             </div>
-            <Sidebar closeToggle={setToggleSidebar} user={user && user} />
+            <SideBar closeToggle={setToggleSidebar} user={user && user} />
           </div>
         )}
       </div>
